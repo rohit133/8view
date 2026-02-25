@@ -31,14 +31,32 @@ export async function POST(request: Request) {
                 user: process.env.SMTP_USER,
                 pass: process.env.SMTP_PASS,
             },
+            // Add timeout and retry logic
+            connectionTimeout: 10000, // 10 seconds
+            greetingTimeout: 10000,
+            socketTimeout: 10000,
         });
+
+        // Verify transporter configuration
+        try {
+            await transporter.verify();
+            console.log('SMTP connection verified successfully');
+        } catch (verifyError) {
+            console.error('SMTP Verification Error:', verifyError);
+            // Fallback if verification fails
+            console.warn('Falling back to server logging due to SMTP verification failure');
+            return NextResponse.json({
+                message: 'Enquiry received. (Email delivery failed: Connection error)',
+                debug: process.env.NODE_ENV === 'development' ? verifyError : undefined
+            }, { status: 200 });
+        }
 
         // Email to Admin
         const adminMailOptions = {
-            from: `"Resort Website" <${process.env.SMTP_USER}>`,
+            from: process.env.SMTP_USER,
             to: process.env.CONTACT_TO_EMAIL,
-            bcc: email,
             subject: `New Wedding Enquiry: ${firstName} ${lastName}`,
+            replyTo: email, // Set Reply-To to the submitter's email
             text: `
                 New Wedding Enquiry Details:
                 

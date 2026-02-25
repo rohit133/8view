@@ -6,6 +6,11 @@ import { ICarouselSection } from '@/types/sections/carousel';
 
 export const Carousel = ({ items }: ICarouselSection) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+    // Minimum swipe distance in pixels
+    const minSwipeDistance = 50;
 
     const nextSlide = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
@@ -15,10 +20,37 @@ export const Carousel = ({ items }: ICarouselSection) => {
         setCurrentIndex((prevIndex) => (prevIndex - 1 + items.length) % items.length);
     };
 
+    const onTouchStart = (e: React.TouchEvent) => {
+        setTouchEnd(null);
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const onTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+
+        if (isLeftSwipe) {
+            nextSlide();
+        } else if (isRightSwipe) {
+            prevSlide();
+        }
+    };
+
     return (
         <section className="py-20 bg-cream">
             <div className="luxury-container">
-                <div className="relative aspect-[21/9] w-full overflow-hidden rounded-2xl shadow-2xl group">
+                <div
+                    className="relative aspect-[4/5] md:aspect-[21/9] w-full overflow-hidden rounded-2xl shadow-2xl group"
+                    onTouchStart={onTouchStart}
+                    onTouchMove={onTouchMove}
+                    onTouchEnd={onTouchEnd}
+                >
                     {/* Slides */}
                     {items.map((item, index) => (
                         <div
@@ -33,11 +65,11 @@ export const Carousel = ({ items }: ICarouselSection) => {
                                 className="object-cover"
                             />
                             {/* Overlay for text legibility */}
-                            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-12 flex flex-col justify-end">
-                                <p className="text-white/60 text-sm mb-2 font-inter">
+                            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-6 md:p-12 flex flex-col justify-end">
+                                <p className="text-white/60 text-xs md:text-sm mb-2 font-inter">
                                     {index + 1}/{items.length}
                                 </p>
-                                <h3 className="text-white text-3xl font-playfair">
+                                <h3 className="text-white text-xl md:text-3xl font-playfair">
                                     {item.title}
                                 </h3>
                             </div>

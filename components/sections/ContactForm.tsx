@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { IContactSection, IContactFormData } from '@/types/sections/contact';
 
 export const ContactForm = ({ title, description }: IContactSection) => {
@@ -15,7 +16,6 @@ export const ContactForm = ({ title, description }: IContactSection) => {
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -25,7 +25,6 @@ export const ContactForm = ({ title, description }: IContactSection) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-        setSubmitStatus('idle');
 
         try {
             const response = await fetch('/api/contact', {
@@ -35,7 +34,10 @@ export const ContactForm = ({ title, description }: IContactSection) => {
             });
 
             if (response.ok) {
-                setSubmitStatus('success');
+                toast.success('Your enquiry has been received.', {
+                    // description: 'We will contact you shortly.',
+                    duration: 5000,
+                });
                 setFormData({
                     firstName: '',
                     lastName: '',
@@ -46,10 +48,10 @@ export const ContactForm = ({ title, description }: IContactSection) => {
                     vision: ''
                 });
             } else {
-                setSubmitStatus('error');
+                toast.error('Something went wrong. Please try again later.');
             }
         } catch (error) {
-            setSubmitStatus('error');
+            toast.error('Failed to send enquiry. Please check your connection.');
         } finally {
             setIsSubmitting(false);
         }
@@ -189,17 +191,6 @@ export const ContactForm = ({ title, description }: IContactSection) => {
                             {isSubmitting ? 'Submitting...' : 'Submit Enquiry'}
                         </button>
                     </div>
-
-                    {submitStatus === 'success' && (
-                        <p className="text-green-600 text-center font-medium animate-fade-in">
-                            Thank you! Your enquiry has been received. We will contact you shortly.
-                        </p>
-                    )}
-                    {submitStatus === 'error' && (
-                        <p className="text-red-600 text-center font-medium">
-                            Something went wrong. Please try again later.
-                        </p>
-                    )}
                 </form>
             </div>
         </section>
