@@ -3,9 +3,12 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { IAccordionSection } from '@/types/sections/accordion';
+import { Modal } from '@/components/ui/Modal';
+import { EnquiryForm } from '@/components/forms/EnquiryForm';
 
 export const AccordionSection = ({ title, description, items, imageSrc, imageAlt, ctaLabel }: IAccordionSection) => {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const toggleAccordion = (index: number) => {
         setOpenIndex(openIndex === index ? null : index);
@@ -55,7 +58,10 @@ export const AccordionSection = ({ title, description, items, imageSrc, imageAlt
                         ))}
                     </div>
 
-                    <button className="mt-12 px-8 py-3 border border-sage text-sage uppercase tracking-widest text-sm font-medium hover:bg-sage hover:text-white transition-all">
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="mt-12 px-8 py-3 border border-sage text-sage uppercase tracking-widest text-sm font-medium hover:bg-sage hover:text-white transition-all"
+                    >
                         {ctaLabel}
                     </button>
                 </div>
@@ -72,6 +78,18 @@ export const AccordionSection = ({ title, description, items, imageSrc, imageAlt
                     </div>
                 </div>
             </div>
+
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title="Book Ceremony"
+            >
+                <EnquiryForm
+                    initialInterest={openIndex !== null ? items[openIndex].title : ''}
+                    onSuccess={() => setIsModalOpen(false)}
+                    onCancel={() => setIsModalOpen(false)}
+                />
+            </Modal>
         </section>
     );
 };

@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { IContactSection, IContactFormData } from '@/types/sections/contact';
+import { useEnquiry } from '@/hooks/useEnquiry';
 
 export const ContactForm = ({ title, description }: IContactSection) => {
+    const { submitEnquiry, isSubmitting } = useEnquiry();
     const [formData, setFormData] = useState<IContactFormData>({
         firstName: '',
         lastName: '',
@@ -15,8 +17,6 @@ export const ContactForm = ({ title, description }: IContactSection) => {
         vision: ''
     });
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -24,36 +24,25 @@ export const ContactForm = ({ title, description }: IContactSection) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsSubmitting(true);
 
-        try {
-            const response = await fetch('/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+        const result = await submitEnquiry({ ...formData, interest: 'General Enquiry' } as any);
+
+        if (result.success) {
+            toast.success('Your enquiry has been received.', {
+                description: 'We will contact you shortly.',
+                duration: 5000,
             });
-
-            if (response.ok) {
-                toast.success('Your enquiry has been received.', {
-                    // description: 'We will contact you shortly.',
-                    duration: 5000,
-                });
-                setFormData({
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    phone: '',
-                    weddingDate: '',
-                    guestsCount: '',
-                    vision: ''
-                });
-            } else {
-                toast.error('Something went wrong. Please try again later.');
-            }
-        } catch (error) {
-            toast.error('Failed to send enquiry. Please check your connection.');
-        } finally {
-            setIsSubmitting(false);
+            setFormData({
+                firstName: '',
+                lastName: '',
+                email: '',
+                phone: '',
+                weddingDate: '',
+                guestsCount: '',
+                vision: ''
+            });
+        } else {
+            toast.error(result.error || 'Something went wrong. Please try again later.');
         }
     };
 

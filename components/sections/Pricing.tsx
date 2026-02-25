@@ -1,6 +1,19 @@
+'use client';
+
+import { useState } from 'react';
 import { IPricingSection } from '@/types/sections/pricing';
+import { Modal } from '@/components/ui/Modal';
+import { EnquiryForm } from '@/components/forms/EnquiryForm';
 
 export const Pricing = ({ title, cards }: IPricingSection) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedPackage, setSelectedPackage] = useState('');
+
+    const handleOpenModal = (packageName: string) => {
+        setSelectedPackage(packageName);
+        setIsModalOpen(true);
+    };
+
     return (
         <section className="py-20 bg-cream/50">
             <div className="luxury-container">
@@ -13,8 +26,8 @@ export const Pricing = ({ title, cards }: IPricingSection) => {
                         <div
                             key={idx}
                             className={`relative p-8 rounded-xl transition-all duration-300 flex flex-col ${card.isPopular
-                                    ? 'bg-sage text-white shadow-2xl scale-105 z-10'
-                                    : 'bg-white text-sage border border-gray-100 shadow-sm hover:shadow-md'
+                                ? 'bg-sage text-white shadow-2xl scale-105 z-10'
+                                : 'bg-white text-sage border border-gray-100 shadow-sm hover:shadow-md'
                                 }`}
                         >
                             {card.isPopular && (
@@ -43,16 +56,30 @@ export const Pricing = ({ title, cards }: IPricingSection) => {
                                 ))}
                             </ul>
 
-                            <button className={`w-full py-3 border transition-colors ${card.isPopular
+                            <button
+                                onClick={() => handleOpenModal(card.title)}
+                                className={`w-full py-3 border transition-colors ${card.isPopular
                                     ? 'bg-white text-sage border-white hover:bg-gray-100'
                                     : 'bg-transparent text-sage border-sage hover:bg-sage/5'
-                                }`}>
+                                    }`}>
                                 {card.ctaLabel}
                             </button>
                         </div>
                     ))}
                 </div>
             </div>
+
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title="Request a Quote"
+            >
+                <EnquiryForm
+                    initialInterest={selectedPackage}
+                    onSuccess={() => setIsModalOpen(false)}
+                    onCancel={() => setIsModalOpen(false)}
+                />
+            </Modal>
         </section>
     );
 };
