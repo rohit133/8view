@@ -35,11 +35,11 @@ export const AccordionSection = ({ title, description, items, imageSrc, imageAlt
                             >
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <h4 className="text-lg font-inter font-medium text-gray-800">{item.title}</h4>
+                                        <h5 className="text-md font-inter font-medium text-gray-800">{item.title}</h5>
                                         <p className="text-gray-400 text-sm">{item.price}</p>
                                     </div>
                                     <div className={`text-sage transition-transform duration-300 ${openIndex === idx ? 'rotate-45' : 'rotate-0'}`}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                         </svg>
                                     </div>

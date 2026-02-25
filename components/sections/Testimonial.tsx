@@ -3,14 +3,13 @@ import { ITestimonialSection } from '@/types/sections/testimonial';
 
 export const Testimonial = ({ quote, author, date, authorImage }: ITestimonialSection) => {
     return (
-        <section className="py-24 bg-[#2D4442] text-white overflow-hidden relative">
+        <section className="py-24 bg-[#3B5956] text-white overflow-hidden relative">
             {/* Decorative background element if needed */}
             <div className="luxury-container relative z-10 text-center flex flex-col items-center">
                 <div className="max-w-3xl mx-auto px-4 md:px-12">
-                    <p className="text-lg md:text-xl lg:text-2xl font-playfair italic leading-relaxed mb-12">
+                    <p className="text-[24px] font-normal font-playfair italic leading-[39px] tracking-[0px] text-center mb-12">
                         "{quote}"
                     </p>
-
                     <div className="flex flex-row items-center justify-center">
                         {authorImage ? (
                             <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-white/20">

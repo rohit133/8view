@@ -48,8 +48,8 @@ export const VisitVenue = ({
                                     <MapPin size={20} />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-medium text-[#344E41] mb-1 font-inter">Address</h3>
-                                    <p className="text-gray-600 font-inter leading-relaxed">
+                                    <h5 className="text-lg font-medium text-[#344E41] mb-1 font-playfair">Address</h5>
+                                    <p className="text-sm text-gray-600 font-inter leading-relaxed">
                                         {address.street}<br />
                                         {address.district}<br />
                                         {address.city}
@@ -63,8 +63,8 @@ export const VisitVenue = ({
                                     <Phone size={20} />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-medium text-[#344E41] mb-1 font-inter">Contact</h3>
-                                    <p className="text-gray-600 font-inter leading-relaxed">
+                                    <h5 className="text-lg font-medium text-[#344E41] mb-1 font-playfair">Contact</h5>
+                                    <p className="text-sm text-gray-600 font-inter leading-relaxed">
                                         Phone: {contact.phone}<br />
                                         Fax: {contact.fax}
                                     </p>
@@ -77,8 +77,8 @@ export const VisitVenue = ({
                                     <Mail size={20} />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-medium text-[#344E41] mb-1 font-inter">Email</h3>
-                                    <p className="text-gray-600 font-inter leading-relaxed">
+                                    <h5 className="text-lg font-medium text-[#344E41] mb-1 font-playfair">Email</h5>
+                                    <p className="text-sm text-gray-600 font-inter leading-relaxed">
                                         {email.primary}<br />
                                         {email.secondary}
                                     </p>
@@ -91,11 +91,11 @@ export const VisitVenue = ({
                                     <Clock size={20} />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-medium text-[#344E41] mb-1 font-inter">Viewing Hours</h3>
-                                    <p className="text-gray-600 font-inter leading-relaxed">
+                                    <h5 className="text-lg font-medium text-[#344E41] mb-1 font-playfair">Viewing Hours</h5>
+                                    <p className="text-sm text-gray-600 font-inter leading-relaxed">
                                         {hours.weekdays}<br />
                                         {hours.weekends}<br />
-                                        <span className="text-sm italic mt-1 block text-gray-400 font-inter">{hours.note}</span>
+                                        <span className="text-xs italic mt-1 block text-gray-400 font-inter">{hours.note}</span>
                                     </p>
                                 </div>
                             </div>
@@ -124,7 +124,7 @@ export const VisitVenue = ({
                             <div className="w-14 h-14 bg-[#344E41] rounded-full flex items-center justify-center text-white mb-2">
                                 <Phone size={24} />
                             </div>
-                            <h3 className="text-xl font-playfair text-[#344E41]">Call Us</h3>
+                            <h5 className="text-lg font-playfair text-black">Call Us</h5>
                             <p className="text-gray-600 font-inter">{contact.phone}</p>
                             <p className="text-gray-400 text-sm font-inter">Mon-Sun 9am-8pm</p>
                         </div>
@@ -134,7 +134,7 @@ export const VisitVenue = ({
                             <div className="w-14 h-14 bg-[#344E41] rounded-full flex items-center justify-center text-white mb-2">
                                 <Mail size={24} />
                             </div>
-                            <h3 className="text-xl font-playfair text-[#344E41]">Email Us</h3>
+                            <h5 className="text-lg font-playfair text-black">Email Us</h5>
                             <p className="text-gray-600 font-inter">{email.primary}</p>
                             <p className="text-gray-400 text-sm font-inter">We reply within 24 hours</p>
                         </div>
@@ -144,7 +144,7 @@ export const VisitVenue = ({
                             <div className="w-14 h-14 bg-[#344E41] rounded-full flex items-center justify-center text-white mb-2">
                                 <MapPin size={24} />
                             </div>
-                            <h3 className="text-xl font-playfair text-[#344E41]">Visit Us</h3>
+                            <h5 className="text-lg font-playfair text-black">Visit Us</h5>
                             <p className="text-gray-600 font-inter">{address.street}</p>
                             <p className="text-gray-400 text-sm font-inter">By appointment only</p>
                         </div>

@@ -21,7 +21,7 @@ export const Footer = ({ about, quickLinks, services, connect, bottom }: IFooter
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
                     {/* About Us */}
                     <div className="space-y-6">
-                        <h3 className="text-xl font-playfair font-medium">{about.title}</h3>
+                        <h5 className="text-xl md:text-2xl font-playfair font-medium">{about.title}</h5>
                         <p className="text-white/70 font-inter text-sm leading-relaxed max-w-xs">
                             {about.description}
                         </p>
@@ -29,7 +29,7 @@ export const Footer = ({ about, quickLinks, services, connect, bottom }: IFooter
 
                     {/* Quick Links */}
                     <div className="space-y-6">
-                        <h3 className="text-xl font-playfair font-medium">{quickLinks.title}</h3>
+                        <h5 className="text-xl md:text-2xl font-playfair font-medium">{quickLinks.title}</h5>
                         <ul className="space-y-3">
                             {quickLinks.links.map((link) => (
                                 <li key={link.label}>
@@ -46,7 +46,7 @@ export const Footer = ({ about, quickLinks, services, connect, bottom }: IFooter
 
                     {/* Services */}
                     <div className="space-y-6">
-                        <h3 className="text-xl font-playfair font-medium">{services.title}</h3>
+                        <h5 className="text-xl md:text-2xl font-playfair font-medium">{services.title}</h5>
                         <ul className="space-y-3">
                             {services.links.map((link) => (
                                 <li key={link.label}>
@@ -63,7 +63,7 @@ export const Footer = ({ about, quickLinks, services, connect, bottom }: IFooter
 
                     {/* Connect With Us */}
                     <div className="space-y-6">
-                        <h3 className="text-xl font-playfair font-medium">{connect.title}</h3>
+                        <h5 className="text-xl md:text-2xl font-playfair font-medium">{connect.title}</h5>
                         <div className="flex gap-4">
                             {connect.social.map((item) => (
                                 <Link

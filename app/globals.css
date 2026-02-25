@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --font-playfair: "Playfair Display", serif;
-  --font-inter: "Inter", sans-serif;
+  --font-playfair: var(--font-playfair), serif;
+  --font-elsie: var(--font-elsie), cursive;
+  --font-poppins: var(--font-poppins), sans-serif;
+  --font-inter: var(--font-poppins), sans-serif;
 
   --color-cream: #f6f3ee;
   --color-sage: #3d5a54;
@@ -17,7 +19,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter);
+  font-family: var(--font-poppins);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -27,6 +29,9 @@ h3,
 h4 {
   font-family: var(--font-playfair);
   font-weight: 500;
+  font-size: 36px;
+  line-height: 40px;
+  letter-spacing: 0px;
 }
 
 .luxury-container {
