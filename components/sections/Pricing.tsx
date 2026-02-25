@@ -15,7 +15,7 @@ export const Pricing = ({ title, cards }: IPricingSection) => {
     };
 
     return (
-        <section className="py-20 bg-cream/50">
+        <section className="py-20 bg-[#F5F1E8]">
             <div className="luxury-container">
                 <h2 className="text-center text-4xl md:text-5xl mb-16 text-sage">
                     {title}
@@ -26,7 +26,7 @@ export const Pricing = ({ title, cards }: IPricingSection) => {
                         <div
                             key={idx}
                             className={`relative p-8 rounded-xl transition-all duration-300 flex flex-col ${card.isPopular
-                                ? 'bg-sage text-white shadow-2xl scale-105 z-10'
+                                ? 'bg-[#2D4442] text-white shadow-2xl scale-105 z-10'
                                 : 'bg-white text-sage border border-gray-100 shadow-sm hover:shadow-md'
                                 }`}
                         >

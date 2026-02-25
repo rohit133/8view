@@ -11,7 +11,7 @@ export const FAQ = ({ title, items }: IFAQSection) => {
     };
 
     return (
-        <section className="py-24">
+        <section className="py-24 bg-[#FFFFFF]">
             <div className="max-w-3xl mx-auto px-4">
                 <h2 className="text-4xl md:text-5xl text-center mb-10 text-sage">
                     {title}

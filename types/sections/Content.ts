@@ -1,4 +1,5 @@
 export interface ISectionContent {
+    className?: string;
     title: string;
     paragraphs: string[];
     imageSrc: string;

@@ -33,4 +33,8 @@ export interface IVisitVenueSection {
         weekends: string;
         note: string;
     };
+    bookingTitle?: string;
+    bookingDescription?: string;
+    directionsCta?: string;
+    tourCta?: string;
 }

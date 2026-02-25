@@ -44,7 +44,7 @@ export default function Home() {
         <AlternatingSection {...historySection} />
       </div>
 
-      <AlternatingSection {...nourishmentSection} />
+      <AlternatingSection className='bg-[#FFFFFF]' {...nourishmentSection} />
 
       <div id="packages">
         <Pricing {...pricingData} />

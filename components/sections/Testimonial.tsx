@@ -3,7 +3,7 @@ import { ITestimonialSection } from '@/types/sections/testimonial';
 
 export const Testimonial = ({ quote, author, date, authorImage }: ITestimonialSection) => {
     return (
-        <section className="py-24 bg-sage text-white overflow-hidden relative">
+        <section className="py-24 bg-[#2D4442] text-white overflow-hidden relative">
             {/* Decorative background element if needed */}
             <div className="luxury-container relative z-10 text-center flex flex-col items-center">
                 <div className="max-w-3xl mx-auto px-4 md:px-12">

@@ -3,7 +3,7 @@ import { IGallerySection } from '@/types/sections/gallery';
 
 export const GalleryGrid = ({ title, items }: IGallerySection) => {
     return (
-        <section className="py-20">
+        <section className="py-20 bg-[#FFFFFF]">
             <div className="luxury-container">
                 <h2 className="text-4xl md:text-5xl text-center mb-16 text-sage">
                     {title}

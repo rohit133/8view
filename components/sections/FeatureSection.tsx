@@ -3,7 +3,7 @@ import { IFeatureSection } from '@/types/sections/features';
 
 export const FeatureSection = ({ title, paragraphs, imageSrc, imageAlt, lists, reverse = false }: IFeatureSection) => {
     return (
-        <section className="py-20 md:py-32">
+        <section className="py-20 md:py-32 bg-[#FFFFFF]">
             <div className={`luxury-container flex flex-col md:flex-row items-center gap-12 md:gap-24 ${reverse ? 'md:flex-row-reverse' : ''}`}>
 
                 {/* Image Content */}

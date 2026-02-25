@@ -1,20 +1,42 @@
 'use client';
 
+import { useState } from 'react';
 import { IVisitVenueSection } from '@/types/sections/contact';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { Modal } from '@/components/ui/Modal';
+import { EnquiryForm } from '@/components/forms/EnquiryForm';
 
-export const VisitVenue = ({ title, address, contact, email, hours }: IVisitVenueSection) => {
+export const VisitVenue = ({
+    title,
+    address,
+    contact,
+    email,
+    hours,
+    bookingTitle = "Ready to book your dream wedding?",
+    bookingDescription = "Contact us today to schedule a tour and consultation",
+    directionsCta = "Get Directions",
+    tourCta = "Schedule a Tour"
+}: IVisitVenueSection) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     return (
-        <section className="py-24 bg-[#F6F3EE]">
+        <section className="py-24 bg-[#F5F1E8]">
             <div className="max-w-6xl mx-auto px-4">
                 <h2 className="text-4xl md:text-5xl text-center text-[#344E41] mb-16 font-playfair">
                     {title}
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch">
-                    {/* Map Placeholder */}
-                    <div className="bg-[#E5E7EB] rounded-lg shadow-inner flex items-center justify-center h-full">
-                        <span className="text-gray-400 font-inter">Map / Venue Image</span>
+                    {/* Working Google Map Embed */}
+                    <div className="rounded-lg shadow-xl overflow-hidden h-full min-h-[400px] border border-gray-100">
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            style={{ border: 0 }}
+                            loading="lazy"
+                            allowFullScreen
+                            referrerPolicy="no-referrer-when-downgrade"
+                            src={`https://maps.google.com/maps?q=${encodeURIComponent(`${address.street}, ${address.district}, ${address.city}`)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                        ></iframe>
                     </div>
 
                     {/* Contact Info container */}
@@ -81,7 +103,7 @@ export const VisitVenue = ({ title, address, contact, email, hours }: IVisitVenu
 
                         <div className="pt-8">
                             <button className="px-10 py-3 bg-[#334D41] text-white font-medium rounded-sm hover:bg-[#2d4338] transition-all shadow-md font-inter text-sm tracking-wide">
-                                Get Directions
+                                {directionsCta}
                             </button>
                         </div>
                     </div>
@@ -90,10 +112,10 @@ export const VisitVenue = ({ title, address, contact, email, hours }: IVisitVenu
                 {/* Ready to book Section */}
                 <div className="mt-32 text-center">
                     <h2 className="text-4xl md:text-5xl text-[#344E41] mb-4 font-playfair">
-                        Ready to book your dream wedding?
+                        {bookingTitle}
                     </h2>
                     <p className="text-gray-500 font-inter mb-16">
-                        Contact us today to schedule a tour and consultation
+                        {bookingDescription}
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
@@ -128,11 +150,26 @@ export const VisitVenue = ({ title, address, contact, email, hours }: IVisitVenu
                         </div>
                     </div>
 
-                    <button className="px-10 py-4 bg-[#344E41] text-white font-medium rounded-md hover:bg-[#2d4338] transition-all transform hover:scale-[1.02] shadow-lg font-inter">
-                        Schedule a Tour
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="px-10 py-4 bg-[#344E41] text-white font-medium rounded-md hover:bg-[#2d4338] transition-all transform hover:scale-[1.02] shadow-lg font-inter"
+                    >
+                        {tourCta}
                     </button>
                 </div>
             </div>
+
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title={tourCta}
+            >
+                <EnquiryForm
+                    initialInterest="Site Tour"
+                    onSuccess={() => setIsModalOpen(false)}
+                    onCancel={() => setIsModalOpen(false)}
+                />
+            </Modal>
         </section>
     );
 };

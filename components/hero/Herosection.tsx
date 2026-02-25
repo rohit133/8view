@@ -18,7 +18,6 @@ export function HeroSection({
   return (
     <section className="w-full">
       <div className="flex flex-col lg:flex-row">
-        {/* left half: image or placeholder */}
         <div className="lg:w-1/2">
           {imageSrc ? (
             <Image
@@ -33,7 +32,7 @@ export function HeroSection({
           )}
         </div>
         {/* right half: text content */}
-        <div className="lg:w-1/2 bg-teal-800 text-white flex flex-col justify-center p-12">
+        <div className="lg:w-1/2 bg-[#2D4442] text-white flex flex-col justify-center p-12">
           <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
             {title}
           </h1>

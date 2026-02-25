@@ -3,7 +3,7 @@ import { IVenuesSectionProps } from '@/types/sections/venues';
 
 export const VenuesGrid = ({ venues }: IVenuesSectionProps) => {
     return (
-        <section className="py-20">
+        <section className="py-20 bg-[#F5F1E8]">
             <div className="luxury-container">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
                     {venues.map((venue, index) => (

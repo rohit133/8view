@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { ISectionContent } from '@/types/sections/Content';
 
-export const AlternatingSection = ({ title, paragraphs, imageSrc, imageAlt, reverse = false }: ISectionContent) => {
+export const AlternatingSection = ({ className, title, paragraphs, imageSrc, imageAlt, reverse = false }: ISectionContent) => {
     return (
-        <section className="py-20 md:py-32">
+        <section className={`py-20 md:py-32 ${className}`}>
             <div className={`luxury-container flex flex-col md:flex-row items-center gap-12 md:gap-24 ${reverse ? 'md:flex-row-reverse' : ''}`}>
                 {/* Text content */}
                 <div className="w-full md:w-[50%]">

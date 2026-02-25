@@ -15,7 +15,7 @@ export const AccordionSection = ({ title, description, items, imageSrc, imageAlt
     };
 
     return (
-        <section className="py-20">
+        <section className="py-20 bg-[#F5F1E8]">
             <div className="luxury-container flex flex-col md:flex-row gap-16 items-start">
                 {/* Left Content */}
                 <div className="w-full md:w-[60%]">

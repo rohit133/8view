@@ -43,10 +43,10 @@ export const Carousel = ({ items }: ICarouselSection) => {
     };
 
     return (
-        <section className="py-20 bg-cream">
-            <div className="luxury-container">
+        <section className="py-20 bg-[#F5F1E8]">
+            <div >
                 <div
-                    className="relative aspect-[4/5] md:aspect-[21/9] w-full overflow-hidden rounded-2xl shadow-2xl group"
+                    className="relative aspect-[4/5] md:aspect-[21/9] w-full max-w-full mx-auto overflow-hidden  shadow-2xl group"
                     onTouchStart={onTouchStart}
                     onTouchMove={onTouchMove}
                     onTouchEnd={onTouchEnd}
