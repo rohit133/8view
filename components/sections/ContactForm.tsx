@@ -1,48 +1,73 @@
 'use client';
 
-import { useState } from 'react';
 import { toast } from 'sonner';
-import { IContactSection, IContactFormData } from '@/types/sections/contact';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { IContactSection } from '@/types/sections/contact';
 import { useEnquiry } from '@/hooks/useEnquiry';
+import { enquirySchema, EnquiryInputData } from '@/lib/validations/enquiry';
 
 export const ContactForm = ({ title, description }: IContactSection) => {
     const { submitEnquiry, isSubmitting } = useEnquiry();
-    const [formData, setFormData] = useState<IContactFormData>({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        weddingDate: '',
-        guestsCount: '',
-        vision: ''
+
+    // Setup React Hook Form with Zod validation
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors }
+    } = useForm<EnquiryInputData>({
+        resolver: zodResolver(enquirySchema) as any,
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            weddingDate: '',
+            guestsCount: '',
+            vision: '',
+            interest: 'General Enquiry'
+        }
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
+    const onSubmit = async (data: EnquiryInputData) => {
+        // We know interest is in defaultValues, but TS might complain if we don't handle it
+        const submitData = { ...data, interest: 'General Enquiry' };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        const result = await submitEnquiry({ ...formData, interest: 'General Enquiry' } as any);
+        // Pass to the existing submit hook which formats the payload correctly
+        const result = await submitEnquiry(submitData as any);
 
         if (result.success) {
             toast.success('Your enquiry has been received.', {
                 description: 'We will contact you shortly.',
                 duration: 5000,
             });
-            setFormData({
-                firstName: '',
-                lastName: '',
-                email: '',
-                phone: '',
-                weddingDate: '',
-                guestsCount: '',
-                vision: ''
-            });
+            // Clear form
+            reset();
         } else {
-            toast.error(result.error || 'Something went wrong. Please try again later.');
+            // Check if error is validation error from API
+            const errorAny = result.error as any;
+            if (errorAny && typeof errorAny === 'object' && ('fieldErrors' in errorAny || 'formErrors' in errorAny)) {
+
+                const fieldErrorMessages = errorAny.fieldErrors
+                    ? Object.values(errorAny.fieldErrors).flat().filter(Boolean).join(', ')
+                    : '';
+                const formErrorMessages = errorAny.formErrors?.length
+                    ? errorAny.formErrors.join(', ')
+                    : '';
+
+                const combinedMessage = [formErrorMessages, fieldErrorMessages].filter(Boolean).join(' | ');
+
+                toast.error('Validation failed. Please check the fields.', {
+                    description: combinedMessage || 'Invalid data provided.'
+                });
+            } else {
+                const safeMessage = typeof result.error === 'string'
+                    ? result.error
+                    : 'Something went wrong. Please try again later.';
+
+                toast.error(safeMessage);
+            }
         }
     };
 
@@ -58,7 +83,7 @@ export const ContactForm = ({ title, description }: IContactSection) => {
                     </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-8">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* First Name */}
                         <div className="flex flex-col gap-2">
@@ -68,12 +93,13 @@ export const ContactForm = ({ title, description }: IContactSection) => {
                             <input
                                 type="text"
                                 id="firstName"
-                                name="firstName"
-                                required
-                                value={formData.firstName}
-                                onChange={handleChange}
-                                className="border border-gray-200 p-3 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter"
+                                placeholder="..."
+                                {...register('firstName')}
+                                className={`border p-3 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter ${errors.firstName ? 'border-red-500' : 'border-gray-200'}`}
                             />
+                            {errors.firstName && (
+                                <p className="text-red-500 text-xs font-inter">{errors.firstName.message}</p>
+                            )}
                         </div>
 
                         {/* Last Name */}
@@ -84,12 +110,13 @@ export const ContactForm = ({ title, description }: IContactSection) => {
                             <input
                                 type="text"
                                 id="lastName"
-                                name="lastName"
-                                required
-                                value={formData.lastName}
-                                onChange={handleChange}
-                                className="border border-gray-200 p-3 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter"
+                                placeholder="..."
+                                {...register('lastName')}
+                                className={`border p-3 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter ${errors.lastName ? 'border-red-500' : 'border-gray-200'}`}
                             />
+                            {errors.lastName && (
+                                <p className="text-red-500 text-xs font-inter">{errors.lastName.message}</p>
+                            )}
                         </div>
 
                         {/* Email */}
@@ -100,12 +127,13 @@ export const ContactForm = ({ title, description }: IContactSection) => {
                             <input
                                 type="email"
                                 id="email"
-                                name="email"
-                                required
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="border border-gray-200 p-3 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter"
+                                placeholder="you@example.com"
+                                {...register('email')}
+                                className={`border p-3 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter ${errors.email ? 'border-red-500' : 'border-gray-200'}`}
                             />
+                            {errors.email && (
+                                <p className="text-red-500 text-xs font-inter">{errors.email.message}</p>
+                            )}
                         </div>
 
                         {/* Phone */}
@@ -116,12 +144,13 @@ export const ContactForm = ({ title, description }: IContactSection) => {
                             <input
                                 type="tel"
                                 id="phone"
-                                name="phone"
-                                required
-                                value={formData.phone}
-                                onChange={handleChange}
-                                className="border border-gray-200 p-3 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter"
+                                placeholder="(123) 456-7890"
+                                {...register('phone')}
+                                className={`border p-3 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter ${errors.phone ? 'border-red-500' : 'border-gray-200'}`}
                             />
+                            {errors.phone && (
+                                <p className="text-red-500 text-xs font-inter">{errors.phone.message}</p>
+                            )}
                         </div>
 
                         {/* Wedding Date */}
@@ -132,11 +161,12 @@ export const ContactForm = ({ title, description }: IContactSection) => {
                             <input
                                 type="date"
                                 id="weddingDate"
-                                name="weddingDate"
-                                value={formData.weddingDate}
-                                onChange={handleChange}
-                                className="border border-gray-200 p-3 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter"
+                                {...register('weddingDate')}
+                                className={`border p-3 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter ${errors.weddingDate ? 'border-red-500' : 'border-gray-200'}`}
                             />
+                            {errors.weddingDate && (
+                                <p className="text-red-500 text-xs font-inter">{errors.weddingDate.message}</p>
+                            )}
                         </div>
 
                         {/* Guests Count */}
@@ -147,11 +177,13 @@ export const ContactForm = ({ title, description }: IContactSection) => {
                             <input
                                 type="number"
                                 id="guestsCount"
-                                name="guestsCount"
-                                value={formData.guestsCount}
-                                onChange={handleChange}
-                                className="border border-gray-200 p-3 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter"
+                                placeholder="100"
+                                {...register('guestsCount')}
+                                className={`border p-3 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter ${errors.guestsCount ? 'border-red-500' : 'border-gray-200'}`}
                             />
+                            {errors.guestsCount && (
+                                <p className="text-red-500 text-xs font-inter">{errors.guestsCount.message}</p>
+                            )}
                         </div>
                     </div>
 
@@ -162,12 +194,10 @@ export const ContactForm = ({ title, description }: IContactSection) => {
                         </label>
                         <textarea
                             id="vision"
-                            name="vision"
                             rows={4}
-                            value={formData.vision}
-                            onChange={handleChange}
+                            {...register('vision')}
                             placeholder="Share your ideas, questions, or special requirements..."
-                            className="border border-gray-200 p-4 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter resize-none"
+                            className={`border p-4 rounded-md focus:border-[#344E41] outline-none transition-colors font-inter resize-none ${errors.vision ? 'border-red-500' : 'border-gray-200'}`}
                         ></textarea>
                     </div>
 

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { enquiryService } from '@/services/EnquiryService';
+import { enquirySchema } from '@/lib/validations/enquiry';
 
 export async function GET() {
     try {
@@ -14,14 +15,21 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-
-        // Basic validation
-        const { firstName, lastName, email, phone, interest } = body;
-        if (!firstName || !lastName || !email || !phone || !interest) {
-            return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 });
+        const validationResult = enquirySchema.safeParse(body);
+        if (!validationResult.success) {
+            return NextResponse.json(
+                { success: false, error: validationResult.error.flatten() },
+                { status: 400 }
+            );
         }
 
-        const enquiry = await enquiryService.createEnquiry(body);
+        const dataToSave = {
+            ...validationResult.data,
+            weddingDate: validationResult.data.weddingDate ? new Date(validationResult.data.weddingDate) : undefined,
+            guestsCount: validationResult.data.guestsCount === '' ? undefined : validationResult.data.guestsCount
+        };
+
+        const enquiry = await enquiryService.createEnquiry(dataToSave);
         return NextResponse.json({ success: true, data: enquiry }, { status: 201 });
     } catch (error) {
         console.error('Error creating enquiry:', error);
